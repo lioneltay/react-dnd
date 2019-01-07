@@ -1,6 +1,6 @@
 {
   "name": "mymodule",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "boiler plate for a typescript npm package",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
