@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "lib": ["webworker", "esnext", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "*": ["./src/*"]
+    },
+    "jsx": "preserve",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["./src/**/*", "./**/*.d.ts"],
+  "exclude": ["node_modules"]
+}

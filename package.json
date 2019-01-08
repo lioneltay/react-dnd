@@ -1,5 +1,5 @@
 {
-  "name": "mymodule",
+  "name": "dnd",
   "version": "0.0.1",
   "description": "boiler plate for a typescript npm package",
   "main": "lib/index.js",
@@ -41,7 +41,7 @@
     "typescript": "^3.2.2"
   },
   "peerDependencies": {
-    "react": ">= 16.4.0",
-    "react-dom": ">= 16.4.0"
+    "react": ">= 16.7.0-alpha.2",
+    "react-dom": ">= 16.7.0-alpha.2"
   }
 }
