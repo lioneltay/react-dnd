@@ -1,10 +1,15 @@
 import { useEffect, useContext } from "react"
 import { Context } from "./context"
 import { Type } from "./state"
+import { noop } from "./utils"
+
+type OnDragStartInput = {
+  onDragEnd?: () => void
+}
 
 type DraggableOptions = {
-  onDragStart: () => void
-  onDragEnd: () => void
+  onDragStart?: (input: OnDragStartInput) => void
+  onDragEnd?: () => void
   data: any
   type: Type
 }
@@ -16,26 +21,18 @@ type DraggableResult = {
 }
 
 export const useDraggable = ({
-  onDragStart,
-  onDragEnd,
+  onDragStart = noop,
+  onDragEnd = noop,
   data,
   type,
 }: DraggableOptions): DraggableResult => {
   const { actions } = useContext(Context)
 
-  // use react portal to put a fixed viewport size item that collects pointerup events? events will still follow react hierarchy
-  useEffect(() => {
-    document.addEventListener("pointerup", () => {
-      actions.endDrag()
-      onDragEnd()
-    })
-  }, [])
-
   return {
     event_handlers: {
       onPointerDown: () => {
         actions.startDrag({ data, type })
-        onDragStart()
+        onDragStart({ onDragEnd })
       },
     },
   }

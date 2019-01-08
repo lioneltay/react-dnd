@@ -7,17 +7,20 @@ export type State =
       is_dragging: false
       type: undefined
       data: null
+      onDragEnd?: undefined
     }
   | {
       is_dragging: true
       type: Type
       data: any
+      onDragEnd?: (() => void)
     }
 
 export const initial_state: State = {
   is_dragging: false,
   type: undefined,
   data: null,
+  onDragEnd: undefined,
 }
 
 export const reducer: React.Reducer<State, Actions> = (
@@ -31,6 +34,7 @@ export const reducer: React.Reducer<State, Actions> = (
         data: action.payload.data,
         is_dragging: true,
         type: action.payload.type,
+        onDragEnd: action.payload.onDragEnd,
       }
     }
 
@@ -40,6 +44,13 @@ export const reducer: React.Reducer<State, Actions> = (
         data: null,
         type: undefined,
         is_dragging: false,
+        onDragEnd: undefined,
+      }
+    }
+
+    case ActionTypes.DROP: {
+      return {
+        ...state,
       }
     }
 

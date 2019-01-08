@@ -1,12 +1,13 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useCallback } from "react"
 import { Context } from "./context"
 
 import { Type } from "./state"
 
-import { matchType } from "./utils"
+import { matchType, noop } from "./utils"
 
 type UseDropzoneOptions = {
-  onDrop: (info: { data: any }) => void
+  canDrop?: (info: { data: any }) => boolean
+  onDrop?: (info: { data: any }) => void
   type: Type
 }
 
@@ -21,20 +22,27 @@ type UseDropzoneResult = {
 }
 
 export const useDropzone = ({
-  onDrop,
+  canDrop = () => true,
+  onDrop = noop,
   type,
 }: UseDropzoneOptions): UseDropzoneResult => {
-  const context = useContext(Context)
+  const { state, actions } = useContext(Context)
   const [hovering, setHovering] = useState(false)
+
+  const calculateCanDrop = () =>
+    state.is_dragging &&
+    matchType(state.type, type) &&
+    canDrop({ data: state.data })
 
   return {
     hovering,
-    can_drop: matchType(context.state.type, type),
+    can_drop: calculateCanDrop(),
 
     event_handlers: {
       onPointerUp: () => {
-        if (matchType(context.state.type, type)) {
-          onDrop({ data: context.state.data })
+        if (calculateCanDrop()) {
+          onDrop({ data: state.data })
+          actions.drop()
         }
       },
 

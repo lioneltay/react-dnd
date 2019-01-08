@@ -42,20 +42,25 @@ function createAction<T extends string, P>(type: T, payload?: P) {
 export enum ActionTypes {
   START_DRAG = "START_DRAG",
   END_DRAG = "END_DRAG",
+  DROP = "DROP",
 }
 
 type StartDragInput = {
   data: any
   type: Type
+  onDragEnd?: () => void
 }
-const startDrag = ({ data, type }: StartDragInput) =>
-  createAction(ActionTypes.START_DRAG, { data, type })
+const startDrag = ({ data, type, onDragEnd }: StartDragInput) =>
+  createAction(ActionTypes.START_DRAG, { data, type, onDragEnd })
 
 const endDrag = () => createAction(ActionTypes.END_DRAG)
+
+const drop = () => createAction(ActionTypes.DROP)
 
 export const actions = {
   startDrag,
   endDrag,
+  drop,
 }
 
 export type Actions = ActionsUnion<typeof actions>
