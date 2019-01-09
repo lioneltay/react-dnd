@@ -1,6 +1,6 @@
 {
   "name": "@tekktekk/react-dnd",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple Drag and Drop for React",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

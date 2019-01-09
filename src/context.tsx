@@ -65,7 +65,7 @@ export const Provider: React.FunctionComponent<ProviderProps> = ({
             pageY: e.pageY,
           },
           dropzone: state.drop_result ? state.drop_result.dropzone : undefined,
-          drag_item_info: state.drag_item_info
+          drag_item_info: state.drag_item_info,
         })
       }
       actions.endDrag()
