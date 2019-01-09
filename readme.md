@@ -4,6 +4,12 @@ This package is still in development stages and the API will most likely change.
 
 # Drag and Drop for react
 
+## Install
+
+```
+npm install @tekktekk/react-dnd
+```
+
 ## Issues
 
 - [ ] mobile touch? (chess demo doesn't seem to work)
