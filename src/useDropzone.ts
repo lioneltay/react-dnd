@@ -1,4 +1,4 @@
-import { useContext, useState, useCallback } from "react"
+import { useContext, useState } from "react"
 import { Context } from "./context"
 
 import { Type } from "./state"
@@ -55,15 +55,4 @@ export const useDropzone = <T = any>({
       },
     },
   }
-}
-
-type FunctionType<A extends any[] = any[], R = any> = (...args: A) => R
-
-type Arguments<T extends FunctionType> = T extends FunctionType<infer A, any>
-  ? A
-  : never
-
-export const createUseDropzone = <D extends any>() => {
-  return <T extends D>(...args: Arguments<typeof useDropzone>) =>
-    useDropzone<T>(...args)
 }
