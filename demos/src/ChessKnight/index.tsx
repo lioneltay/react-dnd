@@ -1,8 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-
 import { Provider } from "./context"
-
 import ChessBoard from "./ChessBoard"
 
 const Container = styled.div`
@@ -16,7 +14,6 @@ const ChessKnightDemo: React.FunctionComponent = () => {
     <Provider>
       <Container>
         <h1>Chess Knight Demo</h1>
-
         <ChessBoard />
       </Container>
     </Provider>

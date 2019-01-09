@@ -1,5 +1,12 @@
-import React, { useEffect } from "react"
-import { createContext, useCallback, useReducer, useMemo } from "react"
+import React, {
+  useEffect,
+  useState,
+  Fragment,
+  createContext,
+  useContext,
+  useReducer,
+  useMemo,
+} from "react"
 
 import {
   State,
@@ -18,7 +25,18 @@ type Context = {
 
 export const Context = createContext((null as unknown) as Context)
 
-export const Provider: React.FunctionComponent<{}> = ({ children }) => {
+type RenderPreviewInput = {
+  data: any
+}
+
+type ProviderProps = {
+  renderDraggingItem?: (info: RenderPreviewInput) => React.ReactNode
+}
+
+export const Provider: React.FunctionComponent<ProviderProps> = ({
+  children,
+  renderDraggingItem = () => null,
+}) => {
   const [state, dispatch] = useReducer(reducer, initial_state)
   const actions = useMemo(() => bindActionCreators(dispatch, action_creators), [
     dispatch,
@@ -30,15 +48,66 @@ export const Provider: React.FunctionComponent<{}> = ({ children }) => {
       actions.endDrag()
       state.onDragEnd && state.onDragEnd()
     }
-
     document.addEventListener("pointerup", listener)
-
     return () => document.removeEventListener("pointerup", listener)
   }, [])
 
   return (
     <Context.Provider value={{ state, dispatch, actions }}>
-      {children}
+      <Fragment>
+        <DragItem renderDraggingItem={renderDraggingItem} />
+        {children}
+      </Fragment>
     </Context.Provider>
+  )
+}
+
+type DragItemProps = {
+  renderDraggingItem: NonNullable<ProviderProps["renderDraggingItem"]>
+}
+
+const DragItem: React.FunctionComponent<DragItemProps> = ({
+  renderDraggingItem,
+}) => {
+  const { state } = useContext(Context)
+
+  const [mouse_position, setMousePosition] = useState(null as null | {
+    x: number
+    y: number
+  })
+
+  useEffect(() => {
+    function listener(e: PointerEvent) {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    document.addEventListener("pointermove", listener)
+    return () => document.removeEventListener("pointermove", listener)
+  }, [])
+
+  if (!state.is_dragging) {
+    return null
+  }
+
+  const translate_x =
+    (mouse_position ? mouse_position.x : state.drag_item_info.x) -
+    state.drag_item_info.offset_x
+  const translate_y =
+    (mouse_position ? mouse_position.y : state.drag_item_info.y) -
+    state.drag_item_info.offset_y
+
+  return (
+    <div
+      style={{
+        pointerEvents: "none",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: state.drag_item_info.width,
+        height: state.drag_item_info.height,
+        transform: `translate(${translate_x}px, ${translate_y}px)`,
+      }}
+    >
+      {renderDraggingItem({ data: state.data })}
+    </div>
   )
 }

@@ -1,4 +1,5 @@
 const path = require("path")
+const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 const relativeToRoot = relativePath =>
@@ -68,7 +69,7 @@ module.exports = {
   devtool: "inline-source-map",
 
   devServer: {
-    hot: false,
+    hot: true,
     port: 3000,
     historyApiFallback: true,
   },
@@ -78,5 +79,6 @@ module.exports = {
       template: "./src/index.html",
       filename: "index.html",
     }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 }

@@ -1,3 +1,6 @@
+/**
+ * All state for this demo is held in a single top level context provider.
+ */
 import React, { createContext, useReducer, useRef, useState } from "react"
 import { Position, BoardTile, Board } from "./types"
 
@@ -13,14 +16,21 @@ export const Context = createContext((null as unknown) as Context)
 
 const EMPTY_TILE = { piece: null }
 
-const default_board = Array(8)
+/** An 8x8 board filled with EMPTY_TILEs */
+const DEFAULT_BOARD = Array(8)
   .fill(Array(8).fill(null))
   .map(row => row.map(() => ({ ...EMPTY_TILE }))) as Board
 
-default_board[1][2] = { piece: "knight" }
+/** Place a knight at position in row 2 on column 3 */
+DEFAULT_BOARD[1][2] = { piece: "knight" }
 
+/**
+ * React Hook that internally maintains a Chess Board state.
+ * Methods are returned to allow manipulation of the board updates will be handled through react.
+ * A hook is used instead of simply a data structure class as we need to let React know when we are updating our board.
+ */
 const useBoard = () => {
-  const [board, setBoard] = useState(default_board)
+  const [board, setBoard] = useState(DEFAULT_BOARD)
 
   const getTile = ([x, y]: Position): BoardTile => {
     return { ...board[x][y] }
@@ -56,6 +66,7 @@ const useBoard = () => {
   }
 }
 
+/** Top level provider that holds all the app state */
 export const Provider: React.FunctionComponent = ({ children }) => {
   const { getTile, setTile, clearTile, moveTile, board } = useBoard()
 

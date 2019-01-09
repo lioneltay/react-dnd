@@ -3,7 +3,10 @@ import styled from "styled-components"
 
 import { Context } from "./context"
 
+import { Provider as DnDProvider } from "dnd"
+
 import Tile from "./Tile"
+import { KnightDisplay } from "./Knight"
 
 const Board = styled.div`
   display: grid;
@@ -16,17 +19,19 @@ const ChessBoard: React.FunctionComponent = () => {
   const { board } = useContext(Context)
 
   return (
-    <Board>
-      {board.map((row, row_index: number) =>
-        row.map((tile: any, col_index: number) => (
-          <Tile
-            key={`${row_index}:${col_index}`}
-            position={[row_index, col_index]}
-            {...tile}
-          />
-        )),
-      )}
-    </Board>
+    <DnDProvider renderDraggingItem={() => <KnightDisplay />}>
+      <Board>
+        {board.map((row, row_index: number) =>
+          row.map((tile: any, col_index: number) => (
+            <Tile
+              key={`${row_index}:${col_index}`}
+              position={[row_index, col_index]}
+              {...tile}
+            />
+          )),
+        )}
+      </Board>
+    </DnDProvider>
   )
 }
 

@@ -5,9 +5,9 @@ import { Type } from "./state"
 
 import { matchType, noop } from "./utils"
 
-type UseDropzoneOptions = {
-  canDrop?: (info: { data: any }) => boolean
-  onDrop?: (info: { data: any }) => void
+type UseDropzoneOptions<T> = {
+  canDrop?: (info: { data: T }) => boolean
+  onDrop?: (info: { data: T }) => void
   type: Type
 }
 
@@ -21,11 +21,11 @@ type UseDropzoneResult = {
   }
 }
 
-export const useDropzone = ({
+export const useDropzone = <T = any>({
   canDrop = () => true,
   onDrop = noop,
   type,
-}: UseDropzoneOptions): UseDropzoneResult => {
+}: UseDropzoneOptions<T>): UseDropzoneResult => {
   const { state, actions } = useContext(Context)
   const [hovering, setHovering] = useState(false)
 
@@ -55,4 +55,15 @@ export const useDropzone = ({
       },
     },
   }
+}
+
+type FunctionType<A extends any[] = any[], R = any> = (...args: A) => R
+
+type Arguments<T extends FunctionType> = T extends FunctionType<infer A, any>
+  ? A
+  : never
+
+export const createUseDropzone = <D extends any>() => {
+  return <T extends D>(...args: Arguments<typeof useDropzone>) =>
+    useDropzone<T>(...args)
 }

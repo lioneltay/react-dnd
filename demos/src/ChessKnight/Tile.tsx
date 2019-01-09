@@ -7,6 +7,7 @@ import { Context } from "./context"
 import { Position, Piece } from "./types"
 import Knight, { utils as knight_utils } from "./Knight"
 
+/** Figure out if the tile be a light or dark color based on position */
 function lightTile(position: Position): boolean {
   return (position[0] + position[1]) % 2 === 0
 }
@@ -23,11 +24,7 @@ type Props = {
   piece: Piece
 }
 
-const Tile: React.FunctionComponent<Props> = ({
-  position,
-  children,
-  piece,
-}) => {
+const Tile: React.FunctionComponent<Props> = ({ position, piece }) => {
   const { moveTile, board } = useContext(Context)
 
   const { event_handlers, can_drop } = useDropzone({

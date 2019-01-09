@@ -49,9 +49,22 @@ type StartDragInput = {
   data: any
   type: Type
   onDragEnd?: () => void
+  drag_item_info: {
+    x: number,
+    y: number
+    offset_x: number
+    offset_y: number
+    width: number
+    height: number
+  }
 }
-const startDrag = ({ data, type, onDragEnd }: StartDragInput) =>
-  createAction(ActionTypes.START_DRAG, { data, type, onDragEnd })
+const startDrag = ({ data, type, onDragEnd, drag_item_info }: StartDragInput) =>
+  createAction(ActionTypes.START_DRAG, {
+    data,
+    type,
+    onDragEnd,
+    drag_item_info,
+  })
 
 const endDrag = () => createAction(ActionTypes.END_DRAG)
 
