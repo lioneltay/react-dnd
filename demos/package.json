@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dev-server",
-    "clean": "rimraf dist",
+    "start": "webpack-dev-server --config ./webpack/webpack.config.dev.js",
+    "clean": "rimraf ../docs",
     "build": "npm run clean && webpack --config ./webpack/webpack.config.prod.js",
     "deploy:dev": "npm run build && gcloud app deploy app.yaml --project=tekktekk --quiet",
     "cy:open": "cypress open",

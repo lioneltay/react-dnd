@@ -10,7 +10,7 @@
 - Examples
   - [x] Type demo, bins and items (recycling)
   - [ ] Drag and drop reorderable list
-  - [ ] Drag and drop moving a single item around
+  - [x] Drag and drop moving a single item around
 
 - [ ] publish to npm
 

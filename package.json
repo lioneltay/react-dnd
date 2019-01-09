@@ -4,6 +4,7 @@
   "description": "boiler plate for a typescript npm package",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "homepage": "https://lioneltay.github.io/dnd",
   "repository": {
     "type": "git",
     "url": "https://github.com/lioneltay/dnd.git"

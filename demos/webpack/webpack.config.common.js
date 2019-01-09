@@ -1,9 +1,9 @@
 const path = require("path")
-const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const webpack = require('webpack')
 
 const relativeToRoot = relativePath =>
-  path.resolve(__dirname, "./", relativePath)
+  path.resolve(__dirname, "../", relativePath)
 
 const babel_loader = {
   loader: "babel-loader",
@@ -18,16 +18,8 @@ const ts_loader = {
 }
 
 module.exports = {
-  mode: "development",
-
   entry: {
     main: ["@babel/polyfill", relativeToRoot("./src/index.tsx")],
-  },
-
-  output: {
-    filename: "[name].[hash].js",
-    path: relativeToRoot("./dist"),
-    publicPath: "/",
   },
 
   resolve: {
@@ -46,15 +38,21 @@ module.exports = {
         exclude: /node_modules/,
         use: [babel_loader, ts_loader],
       },
+      {
+        test: /.worker.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "worker-loader",
+            options: {
+              name: "[name].js",
+            },
+          },
+          babel_loader,
+          ts_loader,
+        ],
+      },
     ],
-  },
-
-  devtool: "inline-source-map",
-
-  devServer: {
-    hot: true,
-    port: 3000,
-    historyApiFallback: true,
   },
 
   plugins: [
@@ -62,6 +60,5 @@ module.exports = {
       template: "./src/index.html",
       filename: "index.html",
     }),
-    new webpack.HotModuleReplacementPlugin(),
   ],
 }

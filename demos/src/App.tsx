@@ -1,12 +1,19 @@
 import React from "react"
 import styled from "styled-components"
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom"
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Switch,
+  HashRouter,
+} from "react-router-dom"
 
 import DevDemo from "./Dev"
 import ChessKnightDemo from "./ChessKnight"
 import ChessGameDemo from "./ChessGame"
 import DragTypesDemo from "./DragTypes"
 import DragAroundDemo from "./DragAround"
+import SortableListDemo from "./SortableList"
 
 import { hot } from "react-hot-loader"
 
@@ -14,6 +21,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+const Router: React.FunctionComponent = ({ children }) =>
+  process.env.APP_MODE === "production" ? (
+    <HashRouter>{children}</HashRouter>
+  ) : (
+    <BrowserRouter>{children}</BrowserRouter>
+  )
 
 const App = () => {
   return (
@@ -24,6 +38,7 @@ const App = () => {
         <Route path="/chess-game" component={ChessGameDemo} />
         <Route path="/drag-types" component={DragTypesDemo} />
         <Route path="/drag-around" component={DragAroundDemo} />
+        <Route path="/sortable-list" component={SortableListDemo} />
         <Route
           render={() => (
             <div>
@@ -34,6 +49,7 @@ const App = () => {
                 <Link to="/chess-game">Chess Game Demo</Link>
                 <Link to="/drag-types">Drag Types Demo</Link>
                 <Link to="/drag-around">Drag Around Demo</Link>
+                <Link to="/sortable-list">Sortable List Demo</Link>
               </Container>
             </div>
           )}
