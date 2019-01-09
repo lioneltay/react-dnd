@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/lioneltay/react-dnd.svg?branch=master)](https://travis-ci.org/lioneltay/react-dnd)
+# [@tekktekk/react-dnd](https://lioneltay.github.io/react-dnd) &middot; [![Build Status](https://travis-ci.org/lioneltay/react-dnd.svg?branch=master)](https://travis-ci.org/lioneltay/react-dnd) ![](https://img.shields.io/github/license/lioneltay/react-dnd.svg) ![](https://img.shields.io/github/issues-raw/lioneltay/react-dnd.svg) ![](https://img.shields.io/github/last-commit/lioneltay/react-dnd.svg) ![](https://img.shields.io/npm/dt/@tekktekk/react-dnd.svg) ![](https://img.shields.io/npm/dm/@tekktekk/react-dnd.svg)
 
 # WARNING
 
@@ -18,7 +18,7 @@ npm install @tekktekk/react-dnd
 
 ## Todo
 
-- [ ] Add TravisCI
+- [x] Add TravisCI
 
 - [ ] Performance (review, also just see whether examples perform well)
 
