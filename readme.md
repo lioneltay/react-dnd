@@ -1,4 +1,9 @@
+# WARNING
+
+This package is still in development stages and the API will most likely change. The package also uses React Hooks which are still in alpha.
+
 # Drag and Drop for react
+
 
 ## Todo
 
@@ -18,7 +23,7 @@
 
 - [ ] Write usage documentation
 
-- [ ] Publish documentation website on github pages
+- [x] Publish documentation website on github pages
 
 - [ ] Put examples on code sandbox
   - [ ] tweet with @codesandbox to get viewed and maybe chosen
