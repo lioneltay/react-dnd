@@ -13,7 +13,7 @@ module.exports = {
   output: {
     filename: "[name].[hash].js",
     path: relativeToRoot("../docs"),
-    publicPath: "/dnd/",
+    publicPath: "/react-dnd/",
   },
 
   plugins: [
