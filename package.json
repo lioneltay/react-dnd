@@ -4,7 +4,7 @@
   "description": "Simple Drag and Drop for React",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "homepage": "https://lioneltay.github.io/dnd",
+  "homepage": "https://lioneltay.github.io/react-dnd",
   "repository": {
     "type": "git",
     "url": "https://github.com/lioneltay/dnd.git"
