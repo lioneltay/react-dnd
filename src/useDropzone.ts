@@ -14,8 +14,9 @@ type UseDropzoneOptions<T> = {
 type UseDropzoneResult = {
   hovering: boolean
   can_drop: boolean
+  is_dragging: boolean
   event_handlers: {
-    onPointerUp: () => void
+    onPointerUp: (e: React.PointerEvent) => void
     onPointerEnter: () => void
     onPointerLeave: () => void
   }
@@ -37,12 +38,24 @@ export const useDropzone = <T = any>({
   return {
     hovering,
     can_drop: calculateCanDrop(),
+    is_dragging: state.is_dragging,
 
     event_handlers: {
-      onPointerUp: () => {
+      onPointerUp: (e: React.PointerEvent) => {
         if (calculateCanDrop()) {
           onDrop({ data: state.data })
-          actions.drop()
+
+          const { x, y } = e.currentTarget.getBoundingClientRect() as DOMRect
+          actions.drop({
+            dropzone: {
+              clientX: x,
+              clientY: y,
+              pointer: {
+                relative_x: e.clientX - x,
+                relative_y: e.clientY - y,
+              },
+            },
+          })
         }
       },
 

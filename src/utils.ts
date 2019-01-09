@@ -1,6 +1,8 @@
 import { Type } from "./state"
 
-export function noop() {}
+export function noop(): void {
+  return
+}
 
 export function matchType(candidate: Type, types: Type): boolean {
   if (typeof types === "undefined" || typeof candidate === "undefined") {

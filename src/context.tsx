@@ -2,6 +2,7 @@ import React, {
   useEffect,
   useState,
   Fragment,
+  useRef,
   createContext,
   useContext,
   useReducer,
@@ -27,26 +28,47 @@ export const Context = createContext((null as unknown) as Context)
 
 type RenderPreviewInput = {
   data: any
+  dimensions: {
+    width: number
+    height: number
+  }
 }
 
 type ProviderProps = {
   renderDraggingItem?: (info: RenderPreviewInput) => React.ReactNode
+  dragging_item_z_index?: number
 }
 
 export const Provider: React.FunctionComponent<ProviderProps> = ({
   children,
   renderDraggingItem = () => null,
+  dragging_item_z_index,
 }) => {
   const [state, dispatch] = useReducer(reducer, initial_state)
+  const stateRef = useRef(state)
+  stateRef.current = state
   const actions = useMemo(() => bindActionCreators(dispatch, action_creators), [
     dispatch,
   ])
 
   // use react portal to put a fixed viewport size item that collects pointerup events? events will still follow react hierarchy
   useEffect(() => {
-    function listener() {
+    function listener(e: PointerEvent) {
+      const state = stateRef.current
+      if (state.onDragEnd) {
+        state.onDragEnd({
+          dropped: state.dropped,
+          pointer: {
+            clientX: e.clientX,
+            clientY: e.clientY,
+            pageX: e.pageX,
+            pageY: e.pageY,
+          },
+          dropzone: state.drop_result ? state.drop_result.dropzone : undefined,
+          drag_item_info: state.drag_item_info
+        })
+      }
       actions.endDrag()
-      state.onDragEnd && state.onDragEnd()
     }
     document.addEventListener("pointerup", listener)
     return () => document.removeEventListener("pointerup", listener)
@@ -55,7 +77,10 @@ export const Provider: React.FunctionComponent<ProviderProps> = ({
   return (
     <Context.Provider value={{ state, dispatch, actions }}>
       <Fragment>
-        <DragItem renderDraggingItem={renderDraggingItem} />
+        <DragItem
+          renderDraggingItem={renderDraggingItem}
+          z_index={dragging_item_z_index}
+        />
         {children}
       </Fragment>
     </Context.Provider>
@@ -64,10 +89,12 @@ export const Provider: React.FunctionComponent<ProviderProps> = ({
 
 type DragItemProps = {
   renderDraggingItem: NonNullable<ProviderProps["renderDraggingItem"]>
+  z_index?: number
 }
 
 const DragItem: React.FunctionComponent<DragItemProps> = ({
   renderDraggingItem,
+  z_index = 1000,
 }) => {
   const { state } = useContext(Context)
 
@@ -98,6 +125,7 @@ const DragItem: React.FunctionComponent<DragItemProps> = ({
   return (
     <div
       style={{
+        zIndex: z_index,
         pointerEvents: "none",
         position: "fixed",
         top: 0,
@@ -107,7 +135,13 @@ const DragItem: React.FunctionComponent<DragItemProps> = ({
         transform: `translate(${translate_x}px, ${translate_y}px)`,
       }}
     >
-      {renderDraggingItem({ data: state.data })}
+      {renderDraggingItem({
+        data: state.data,
+        dimensions: {
+          width: state.drag_item_info.width,
+          height: state.drag_item_info.height,
+        },
+      })}
     </div>
   )
 }

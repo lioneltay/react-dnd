@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Type } from "./reducer"
+import { Type, OnDragEndInput } from "./reducer"
 
 type Action<T extends string> = {
   type: T
@@ -48,9 +48,9 @@ export enum ActionTypes {
 type StartDragInput = {
   data: any
   type: Type
-  onDragEnd?: () => void
+  onDragEnd?: (info: OnDragEndInput) => void
   drag_item_info: {
-    x: number,
+    x: number
     y: number
     offset_x: number
     offset_y: number
@@ -68,7 +68,18 @@ const startDrag = ({ data, type, onDragEnd, drag_item_info }: StartDragInput) =>
 
 const endDrag = () => createAction(ActionTypes.END_DRAG)
 
-const drop = () => createAction(ActionTypes.DROP)
+type DropInput = {
+  dropzone: {
+    clientX: number
+    clientY: number
+    pointer: {
+      relative_x: number
+      relative_y: number
+    }
+  }
+}
+const drop = ({ dropzone: { clientX, clientY, pointer } }: DropInput) =>
+  createAction(ActionTypes.DROP, { dropzone: { clientX, clientY, pointer } })
 
 export const actions = {
   startDrag,
