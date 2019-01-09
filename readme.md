@@ -16,6 +16,8 @@ npm install @tekktekk/react-dnd
 
 ## Todo
 
+- [ ] Add TravisCI
+
 - [ ] Performance (review, also just see whether examples perform well)
 
   - [ ] should component update equivalent for hooks or else a pattern
