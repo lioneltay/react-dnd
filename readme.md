@@ -12,13 +12,7 @@ This package is still in development stages and the API will most likely change.
 npm install @tekktekk/react-dnd
 ```
 
-## Issues
-
-- [ ] mobile touch? (chess demo doesn't seem to work)
-
 ## Todo
-
-- [x] Add TravisCI
 
 - [ ] Performance (review, also just see whether examples perform well)
 
@@ -28,20 +22,13 @@ npm install @tekktekk/react-dnd
 
 - Examples
 
-  - [x] Type demo, bins and items (recycling)
   - [ ] Drag and drop reorderable list
-  - [x] Drag and drop moving a single item around
 
-- [ ] publish to npm
+- [ ] write tests on main package
+- [ ] write tests for examples
 
-  - [x] Add author to package.json
-  - [x] add keywords to package.json
-
-- [ ] write tests
-
+- [ ] Scaffold documentation site
 - [ ] Write usage documentation
-
-- [x] Publish documentation website on github pages
 
 - [ ] Put examples on code sandbox
 
