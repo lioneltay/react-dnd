@@ -1,4 +1,4 @@
-import React from "react"
+import React, { forwardRef } from "react"
 import { useDraggable } from "dnd"
 
 type ItemProps = {
@@ -8,36 +8,33 @@ type ItemProps = {
   background: string
 }
 
-export const Item: React.FunctionComponent<ItemProps> = ({
-  style,
-  label,
-  icon,
-  background,
-  ...rest
-}) => {
-  return (
-    <div
-      {...rest}
-      style={{
-        boxSizing: "border-box",
-        color: "white",
-        userSelect: "none",
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        margin: 10,
-        padding: 20,
-        borderRadius: 5,
-        background,
-        ...style,
-      }}
-    >
-      <i className={icon} style={{ fontSize: 50 }} />
-      <div>{label}</div>
-    </div>
-  )
-}
+export const Item = forwardRef<HTMLDivElement, ItemProps>(
+  ({ style, label, icon, background, ...rest }, ref) => {
+    return (
+      <div
+        ref={ref}
+        {...rest}
+        style={{
+          boxSizing: "border-box",
+          color: "white",
+          userSelect: "none",
+          cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          margin: 10,
+          padding: 20,
+          borderRadius: 5,
+          background,
+          ...style,
+        }}
+      >
+        <i className={icon} style={{ fontSize: 50 }} />
+        <div>{label}</div>
+      </div>
+    )
+  },
+)
 
 type DraggableItemProps = ItemProps & {
   type: string | string[]

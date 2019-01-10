@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useMemo, forwardRef } from "react"
 import styled from "styled-components"
 import { Position, ChessSide, DragData, ChessPiece } from "../types"
 import { useDraggable } from "dnd"
@@ -14,20 +14,34 @@ type PieceProps = React.HTMLAttributes<HTMLElement> & {
   side: ChessSide
 }
 
-export const Piece: React.FunctionComponent<PieceProps> = ({
-  piece,
-  side,
-  ...rest
-}) => {
-  return (
-    <Icon
-      {...rest}
-      style={{ color: side === "black" ? "black" : "white" }}
-      className={`fas fa-chess-${piece}`}
-      onDragStart={e => e.preventDefault()}
-    />
-  )
-}
+// export const Piece: React.FunctionComponent<PieceProps> =({
+//   piece,
+//   side,
+//   ...rest
+// }) => {
+//   return (
+//     <Icon
+//       {...rest}
+//       style={{ color: side === "black" ? "black" : "white" }}
+//       className={`fas fa-chess-${piece}`}
+//       onDragStart={e => e.preventDefault()}
+//     />
+//   )
+// }
+
+export const Piece = forwardRef<HTMLElement, PieceProps>(
+  ({ piece, side, ...rest }, ref) => {
+    return (
+      <Icon
+        ref={ref}
+        {...rest}
+        style={{ color: side === "black" ? "black" : "white" }}
+        className={`fas fa-chess-${piece}`}
+        onDragStart={e => e.preventDefault()}
+      />
+    )
+  },
+)
 
 type DraggablePieceProps = {
   position: Position

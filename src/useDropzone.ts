@@ -42,6 +42,7 @@ export const useDropzone = <T = any>({
 
     event_handlers: {
       onPointerUp: (e: React.PointerEvent) => {
+        console.log('pointerup', calculateCanDrop())
         if (calculateCanDrop()) {
           onDrop({ data: state.data })
 

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { forwardRef } from "react"
 import styled from "styled-components"
 import { useDraggable } from "dnd"
 import { Position, Board } from "./types"
@@ -10,15 +10,18 @@ const Icon = styled.i`
   font-size: 30px;
 `
 
+type KnightDisplayProps = React.HTMLAttributes<HTMLElement>
+
 /** Presentational component for a Knight Chess Piece */
-export const KnightDisplay: React.FunctionComponent<
-  React.HTMLAttributes<HTMLElement>
-> = props => (
-  <Icon
-    {...props}
-    className="fas fa-chess-knight"
-    onDragStart={e => e.preventDefault()}
-  />
+export const KnightDisplay = forwardRef<HTMLElement, KnightDisplayProps>(
+  (props, ref) => (
+    <Icon
+      ref={ref}
+      {...props}
+      className="fas fa-chess-knight"
+      onDragStart={e => e.preventDefault()}
+    />
+  ),
 )
 
 type Props = {

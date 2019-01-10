@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from "react"
+import { useEffect, useContext, useState, useRef } from "react"
 import { Context } from "./context"
 import { Type } from "./state"
 import { noop } from "./utils"
@@ -21,6 +21,7 @@ type DraggableResult = {
     is_dragging: boolean
   }
   event_handlers: {
+    ref: React.Ref<any>
     onPointerDown: (e: React.PointerEvent) => void
   }
 }
@@ -40,6 +41,25 @@ export const useDraggable = <T = any>({
     return () => document.removeEventListener("pointerup", notDragging)
   }, [])
 
+  const domRef = useRef(null as null | HTMLElement)
+
+  useEffect(
+    () => {
+      const listener = (e: TouchEvent) => {
+        e.preventDefault()
+      }
+
+      if (domRef.current) {
+        domRef.current.addEventListener("touchstart", listener)
+      }
+
+      return () =>
+        domRef.current &&
+        domRef.current.removeEventListener("touchstart", listener)
+    },
+    [domRef.current],
+  )
+
   return {
     local: {
       is_dragging,
@@ -48,6 +68,8 @@ export const useDraggable = <T = any>({
       is_dragging: state.is_dragging,
     },
     event_handlers: {
+      ref: domRef,
+
       onPointerDown: (e: React.PointerEvent) => {
         const {
           x,
