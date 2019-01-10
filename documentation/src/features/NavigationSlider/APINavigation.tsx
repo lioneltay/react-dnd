@@ -11,22 +11,10 @@ const APINavigation: React.FunctionComponent = () => {
       <Title>API</Title>
 
       <NavItem to="/api/useDraggable">useDraggable</NavItem>
-      {/* <Route
-        path="/api/useDraggable"
-        render={() => <Item to="/api/useDraggable#props">Props</Item>}
-      /> */}
-
       <NavItem to="/api/useDropzone">useDropzone</NavItem>
-      {/* <Route
-        path="/api/useDropzone"
-        render={() => <Item to="/api/useDropzone#props">Props</Item>}
-      /> */}
-
+      <NavItem to="/api/Draggable">Draggable</NavItem>
+      <NavItem to="/api/Dropzone">Dropzone</NavItem>
       <NavItem to="/api/Provider">Provider</NavItem>
-      {/* <Route
-        path="/api/Provider"
-        render={() => <Item to="/api/Provider#props">Props</Item>}
-      /> */}
     </Container>
   )
 }

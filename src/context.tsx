@@ -35,7 +35,12 @@ type RenderPreviewInput = {
 }
 
 type ProviderProps = {
+  /**
+   * What to render under the cursor while dragging.
+   * The render item will automatically be placed in a container the same size as the item that is currently being dragged
+   */
   renderDraggingItem?: (info: RenderPreviewInput) => React.ReactNode
+  /** Defaults to 1000, can be customised. Just to ensure that the cursor item appears above other items */
   dragging_item_z_index?: number
 }
 

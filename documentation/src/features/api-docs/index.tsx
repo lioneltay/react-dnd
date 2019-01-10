@@ -5,11 +5,8 @@ import { Route, Switch, Link, Redirect } from "react-router-dom"
 import UseDraggablePage from "./useDraggable"
 import UseDropzonePage from "./useDropzone"
 import ProviderPage from "./Provider"
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`
+import DraggablePage from "./Draggable"
+import DropzonePage from "./Dropzone"
 
 const APIPage: React.FunctionComponent = () => {
   return (
@@ -17,6 +14,8 @@ const APIPage: React.FunctionComponent = () => {
       <Route path="/api/useDraggable" component={UseDraggablePage} />
       <Route path="/api/useDropzone" component={UseDropzonePage} />
       <Route path="/api/Provider" component={ProviderPage} />
+      <Route path="/api/Draggable" component={DraggablePage} />
+      <Route path="/api/Dropzone" component={DropzonePage} />
       <Route render={() => <Redirect to="/api/useDraggable" />} />
     </Switch>
   )

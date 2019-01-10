@@ -18,7 +18,7 @@ const Container = styled.div`
 const Code: React.FunctionComponent = ({ children }) => {
   return (
     <Container>
-      <SyntaxHighlighter style={st.prism} language="tsx">
+      <SyntaxHighlighter style={st.tomorrow} language="tsx">
         {children}
       </SyntaxHighlighter>
     </Container>
