@@ -5,7 +5,7 @@ import { Type } from "./state"
 
 import { matchType, noop } from "./utils"
 
-type UseDropzoneOptions<T> = {
+export type UseDropzoneOptions<T> = {
   canDrop?: (info: { data: T }) => boolean
   onDrop?: (info: { data: T }) => void
   type: Type
@@ -18,7 +18,7 @@ type UseDropzoneOptions<T> = {
   onDragLeave?: (info: { data: T }) => void
 }
 
-type UseDropzoneResult = {
+export type UseDropzoneResult = {
   hovering: boolean
   can_drop: boolean
   is_dragging: boolean

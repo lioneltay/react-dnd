@@ -6,14 +6,14 @@ import { OnDragEndInput } from "./state"
 
 type OnDragStartInput = {}
 
-type DraggableOptions<T> = {
+export type DraggableOptions<T> = {
   onDragStart?: (input: OnDragStartInput) => void
   onDragEnd?: (input: OnDragEndInput) => void
   data?: T
   type: Type
 }
 
-type DraggableResult = {
+export type DraggableResult = {
   local: {
     is_dragging: boolean
   }
