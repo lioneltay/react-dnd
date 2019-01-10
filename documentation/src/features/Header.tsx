@@ -78,6 +78,7 @@ const Header: React.FunctionComponent = () => {
           <Link to="/guides">Guides</Link>
           <Link to="/api">API</Link>
           <Link to="/examples">Examples</Link>
+          <a href="https://lioneltay.github.io/react-dnd/typedocs/">Typedocs</a>
           <a href="https://github.com/lioneltay/react-dnd">Github</a>
         </Items>
       </Container>
