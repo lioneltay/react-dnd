@@ -123,6 +123,13 @@ export const reducer: React.Reducer<State, Actions> = (
       } as State
     }
 
+    case ActionTypes.UPDATE_DATA: {
+      return {
+        ...state,
+        data: action.payload.data,
+      }
+    }
+
     default: {
       ;((n: never) => {
         return

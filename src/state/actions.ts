@@ -43,6 +43,7 @@ export enum ActionTypes {
   START_DRAG = "START_DRAG",
   END_DRAG = "END_DRAG",
   DROP = "DROP",
+  UPDATE_DATA = "UPDATE_DATA",
 }
 
 type StartDragInput = {
@@ -81,10 +82,17 @@ type DropInput = {
 const drop = ({ dropzone: { clientX, clientY, pointer } }: DropInput) =>
   createAction(ActionTypes.DROP, { dropzone: { clientX, clientY, pointer } })
 
+type UpdateDataInput = {
+  data: any
+}
+const updateData = ({ data }: UpdateDataInput) =>
+  createAction(ActionTypes.UPDATE_DATA, { data })
+
 export const actions = {
   startDrag,
   endDrag,
   drop,
+  updateData,
 }
 
 export type Actions = ActionsUnion<typeof actions>

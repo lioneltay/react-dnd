@@ -23,7 +23,7 @@ const Dropzone: React.FunctionComponent = ({ children }) => {
 }
 
 const Ball = styled.div.attrs({ className: "fas fa-circle" })`
-  font-size: 50px;
+  font-size: 150px;
   color: lightgreen;
 `
 

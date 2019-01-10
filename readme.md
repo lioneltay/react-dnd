@@ -14,6 +14,12 @@ npm install @tekktekk/react-dnd
 
 ## Todo
 
+- [ ] Clicked on item in nav drawer should close drawer
+
+- [ ] Review media component (turn it into hook)
+
+- [ ] Review drawer component
+
 - [ ] Performance (review, also just see whether examples perform well)
 
   - [ ] should component update equivalent for hooks or else a pattern
@@ -23,6 +29,7 @@ npm install @tekktekk/react-dnd
 - Examples
 
   - [ ] Drag and drop reorderable list
+  - [ ] kanban board
 
 - [ ] write tests on main package
 - [ ] write tests for examples

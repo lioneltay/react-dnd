@@ -9,6 +9,13 @@ type UseDropzoneOptions<T> = {
   canDrop?: (info: { data: T }) => boolean
   onDrop?: (info: { data: T }) => void
   type: Type
+  onDragEnter?: (
+    info: {
+      data: T
+      updateData: (data: T) => void
+    },
+  ) => void
+  onDragLeave?: (info: { data: T }) => void
 }
 
 type UseDropzoneResult = {
@@ -25,6 +32,8 @@ type UseDropzoneResult = {
 export const useDropzone = <T = any>({
   canDrop = () => true,
   onDrop = noop,
+  onDragEnter = noop,
+  onDragLeave = noop,
   type,
 }: UseDropzoneOptions<T>): UseDropzoneResult => {
   const { state, actions } = useContext(Context)
@@ -42,7 +51,6 @@ export const useDropzone = <T = any>({
 
     event_handlers: {
       onPointerUp: (e: React.PointerEvent) => {
-        console.log('pointerup', calculateCanDrop())
         if (calculateCanDrop()) {
           onDrop({ data: state.data })
 
@@ -62,10 +70,21 @@ export const useDropzone = <T = any>({
 
       onPointerEnter: () => {
         setHovering(true)
+        if (state.is_dragging) {
+          onDragEnter({
+            data: state.data,
+            updateData: (data: any) => {
+              actions.updateData({ data })
+            },
+          })
+        }
       },
 
       onPointerLeave: () => {
         setHovering(false)
+        if (state.is_dragging) {
+          onDragLeave({ data: state.data })
+        }
       },
     },
   }
