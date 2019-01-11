@@ -1,6 +1,15 @@
-import { Actions, ActionTypes, actions } from "./actions"
+import { Action, ActionTypes } from "./actions"
+import { assertNever } from "../utils"
 
-export type Type = undefined | string | string[]
+import { DnDState } from "./DnDState"
+import { DragType } from "../types"
+
+export type OnDropInput = {
+  data: any
+  type: DragType
+}
+
+export type OnDragStartInput = {}
 
 export type OnDragEndInput = {
   dropped: boolean
@@ -10,7 +19,7 @@ export type OnDragEndInput = {
     pageX: number
     pageY: number
   }
-  dropzone?: {
+  dropzone: null | {
     clientX: number
     clientY: number
     pointer: {
@@ -28,62 +37,19 @@ export type OnDragEndInput = {
   }
 }
 
-export type State =
-  | {
-      is_dragging: false
-      type: undefined
-      data: null
-      onDragEnd?: undefined
-      drag_item_info: null
-      dropped: boolean
-      drop_result?: {
-        dropzone: {
-          clientX: number
-          clienty: number
-          pointer: {
-            relative_x: number
-            relative_y: number
-          }
-        }
-      }
-    }
-  | {
-      is_dragging: true
-      type: Type
-      data: any
-      onDragEnd?: ((input: OnDragEndInput) => void)
-      drag_item_info: {
-        x: number
-        y: number
-        offset_x: number
-        offset_y: number
-        width: number
-        height: number
-      }
-      dropped: boolean
-      drop_result?: {
-        dropzone: {
-          clientX: number
-          clientY: number
-          pointer: {
-            relative_x: number
-            relative_y: number
-          }
-        }
-      }
-    }
-
-export const initial_state: State = {
+export const initial_state: DnDState = {
   is_dragging: false,
-  type: undefined,
-  data: null,
-  onDragEnd: undefined,
-  drag_item_info: null,
   dropped: false,
-  drop_result: undefined,
+  type: null,
+  data: null,
+  drag_item_info: null,
+  drop_result: null,
+  callbacks: {
+    onDragEnd: null,
+  },
 }
 
-export const reducer: React.Reducer<State, Actions> = (
+export const reducer: React.Reducer<DnDState, Action> = (
   state = initial_state,
   action,
 ) => {
@@ -93,27 +59,50 @@ export const reducer: React.Reducer<State, Actions> = (
         return state
       }
 
-      return {
-        ...state,
-        data: action.payload.data,
+      const new_state: DnDState = {
         is_dragging: true,
-        type: action.payload.type,
-        onDragEnd: action.payload.onDragEnd,
-        drag_item_info: action.payload.drag_item_info,
         dropped: false,
-      } as State
+        data: action.payload.data,
+        type: action.payload.type,
+        drop_result: null,
+        callbacks: {
+          onDragEnd: action.payload.onDragEnd,
+        },
+        drag_item_info: action.payload.drag_item_info,
+      }
+
+      action.payload.onDragStart({})
+
+      return new_state
     }
 
     case ActionTypes.END_DRAG: {
-      return {
-        ...state,
-        data: null,
-        type: undefined,
+      if (!state.is_dragging && !state.dropped) {
+        return state
+      }
+
+      const new_state: DnDState = {
         is_dragging: false,
-        onDragEnd: undefined,
-        drag_item_info: null,
         dropped: false,
-      } as State
+        data: null,
+        type: null,
+        drop_result: null,
+        callbacks: {
+          onDragEnd: null,
+        },
+        drag_item_info: null,
+      }
+
+      if (state.callbacks.onDragEnd) {
+        state.callbacks.onDragEnd({
+          dropped: state.dropped,
+          pointer: action.payload.pointer,
+          dropzone: state.dropped ? state.drop_result.dropzone : null,
+          drag_item_info: state.drag_item_info,
+        })
+      }
+
+      return new_state
     }
 
     case ActionTypes.DROP: {
@@ -121,14 +110,27 @@ export const reducer: React.Reducer<State, Actions> = (
         return state
       }
 
-      return {
-        ...state,
+      const drop_data = action.payload.onDrop({
+        data: state.data,
+        type: state.type,
+      })
+
+      const new_state: DnDState = {
+        is_dragging: false,
         dropped: true,
         drop_result: {
-          data: undefined,
+          data: drop_data,
           dropzone: action.payload.dropzone,
         },
-      } as State
+        data: state.data,
+        type: state.type,
+        callbacks: {
+          onDragEnd: state.callbacks.onDragEnd,
+        },
+        drag_item_info: state.drag_item_info,
+      } as DnDState
+
+      return new_state
     }
 
     case ActionTypes.UPDATE_DATA: {
@@ -139,9 +141,7 @@ export const reducer: React.Reducer<State, Actions> = (
     }
 
     default: {
-      ;((n: never) => {
-        return
-      })(action)
+      assertNever(action)
       return state
     }
   }

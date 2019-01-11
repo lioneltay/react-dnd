@@ -1,11 +1,19 @@
-import { Type } from "./state"
+import { DragType } from "../types"
+
+export function assertNever(n: never) {
+  return
+}
 
 export function noop(): void {
   return
 }
 
-export function matchType(candidate: Type, types: Type): boolean {
-  if (typeof types === "undefined" || typeof candidate === "undefined") {
+export function matchType(candidate: DragType, types: DragType): boolean {
+  if (candidate === null) {
+    return false
+  }
+
+  if (types === null) {
     return true
   }
 

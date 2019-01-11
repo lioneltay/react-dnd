@@ -1,5 +1,7 @@
 ## Todo
 
+- [ ] shopping basket example (buyyer send data back to item, items know who bought them)
+
 - [ ] once an item is dragging no other dragging should be able to start
   - [ ] got to find a better way to manage state updates
   - [ ] think about updateData as well
@@ -15,6 +17,8 @@
 - [ ] Review media component (turn it into hook)
 
 - [ ] Review drawer component
+
+- [ ] AND types, current types behave like OR
 
 - [ ] Performance (review, also just see whether examples perform well)
 

@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useState,
   Fragment,
-  useRef,
   createContext,
   useContext,
   useReducer,
@@ -10,8 +9,8 @@ import React, {
 } from "react"
 
 import {
-  State,
-  Actions,
+  DnDState,
+  Action,
   reducer,
   initial_state,
   actions as action_creators,
@@ -19,9 +18,9 @@ import {
 } from "./state"
 
 type Context = {
-  dispatch: React.Dispatch<Actions>
+  dispatch: React.Dispatch<Action>
   actions: typeof action_creators
-  state: State
+  state: DnDState
 }
 
 export const Context = createContext((null as unknown) as Context)
@@ -50,8 +49,6 @@ export const Provider: React.FunctionComponent<ProviderProps> = ({
   dragging_item_z_index,
 }) => {
   const [state, dispatch] = useReducer(reducer, initial_state)
-  const stateRef = useRef(state)
-  stateRef.current = state
   const actions = useMemo(() => bindActionCreators(dispatch, action_creators), [
     dispatch,
   ])
@@ -59,21 +56,14 @@ export const Provider: React.FunctionComponent<ProviderProps> = ({
   // use react portal to put a fixed viewport size item that collects pointerup events? events will still follow react hierarchy
   useEffect(() => {
     function listener(e: PointerEvent) {
-      const state = stateRef.current
-      if (state.onDragEnd) {
-        state.onDragEnd({
-          dropped: state.dropped,
-          pointer: {
-            clientX: e.clientX,
-            clientY: e.clientY,
-            pageX: e.pageX,
-            pageY: e.pageY,
-          },
-          dropzone: state.drop_result ? state.drop_result.dropzone : undefined,
-          drag_item_info: state.drag_item_info,
-        })
-      }
-      actions.endDrag()
+      actions.endDrag({
+        pointer: {
+          clientX: e.clientX,
+          clientY: e.clientY,
+          pageX: e.pageX,
+          pageY: e.pageY,
+        },
+      })
     }
     document.addEventListener("pointerup", listener)
     return () => document.removeEventListener("pointerup", listener)

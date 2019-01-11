@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@tekktekk/react-dnd": "file:../",
+    "@tekktekk/react-dnd": "file:..",
     "@types/react-router-hash-link": "^1.2.0",
     "ramda": "^0.26.1",
     "react": "16.7.0-alpha.2",

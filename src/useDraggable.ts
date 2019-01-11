@@ -1,8 +1,8 @@
 import { useEffect, useContext, useState, useRef } from "react"
 import { Context } from "./context"
-import { Type } from "./state"
 import { noop } from "./utils"
 import { OnDragEndInput } from "./state"
+import { DragType } from "./types"
 
 type OnDragStartInput = {}
 
@@ -10,7 +10,7 @@ export type DraggableOptions<T> = {
   onDragStart?: (input: OnDragStartInput) => void
   onDragEnd?: (input: OnDragEndInput) => void
   data?: T
-  type: Type
+  type: DragType
 }
 
 export type DraggableResult = {
@@ -95,9 +95,6 @@ export const useDraggable = <T = any>({
             height,
           },
         })
-        if (!state.is_dragging) {
-          onDragStart({})
-        }
       },
     },
   }

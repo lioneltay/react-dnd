@@ -41,7 +41,6 @@ const List: React.FunctionComponent<ListProps> = ({
       }
     },
     onDrop: ({ data, type }) => {
-      console.log("drop list", data, type)
       if (type === "item") {
         moveItem(data.position, [position, 0])
       }

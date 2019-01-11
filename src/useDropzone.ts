@@ -1,18 +1,16 @@
 import { useContext, useState } from "react"
 import { Context } from "./context"
-
-import { Type } from "./state"
-
 import { matchType, noop } from "./utils"
+import { DragType } from "./types"
 
 export type UseDropzoneOptions<T> = {
   canDrop?: (info: { data: T }) => boolean
-  onDrop?: (info: { data: T; type: Type }) => void
-  type: Type
+  onDrop?: (info: { data: T; type: DragType }) => any
+  type: DragType
   onDragEnter?: (
     info: {
       data: T
-      type: Type
+      type: DragType
       updateData: (data: T) => void
     },
   ) => void
@@ -53,11 +51,9 @@ export const useDropzone = <T = any>({
     event_handlers: {
       onPointerUp: (e: React.PointerEvent) => {
         if (calculateCanDrop()) {
-          console.log("candrop", state.type, type, state.dropped)
-          onDrop({ data: state.data, type: state.type })
-
           const { x, y } = e.currentTarget.getBoundingClientRect() as DOMRect
           actions.drop({
+            onDrop,
             dropzone: {
               clientX: x,
               clientY: y,

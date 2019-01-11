@@ -1,43 +1,8 @@
 import * as React from "react"
-import { Type, OnDragEndInput } from "./reducer"
-
-type Action<T extends string> = {
-  type: T
-}
-
-type ActionWithPayload<T extends string, P> = Action<T> & {
-  payload: P
-}
-
-type FunctionType = (...args: any[]) => any
-
-type ActionCreatorsMapObject = { [actionCreator: string]: FunctionType }
-
-export type ActionsUnion<A extends ActionCreatorsMapObject> = ReturnType<
-  A[keyof A]
->
-
-export function bindActionCreators<T, A extends ActionCreatorsMapObject>(
-  dispatch: React.Dispatch<T>,
-  action_creators: A,
-): A {
-  return Object.keys(action_creators).reduce(
-    (acc, key) => {
-      acc[key] = (...args: any[]) => dispatch(action_creators[key](...args))
-      return acc
-    },
-    {} as A,
-  )
-}
-
-function createAction<T extends string>(type: T): Action<T>
-function createAction<T extends string, P>(
-  type: T,
-  payload: P,
-): ActionWithPayload<T, P>
-function createAction<T extends string, P>(type: T, payload?: P) {
-  return payload === undefined ? { type } : { type, payload }
-}
+import { OnDragEndInput, OnDragStartInput, OnDropInput } from "./reducer"
+import { createAction, ActionsUnion } from "./utils"
+import { DragType } from "../types"
+import { noop } from "../utils"
 
 export enum ActionTypes {
   START_DRAG = "START_DRAG",
@@ -48,8 +13,9 @@ export enum ActionTypes {
 
 type StartDragInput = {
   data: any
-  type: Type
+  type: DragType
   onDragEnd?: (info: OnDragEndInput) => void
+  onDragStart?: (info: OnDragStartInput) => void
   drag_item_info: {
     x: number
     y: number
@@ -59,15 +25,31 @@ type StartDragInput = {
     height: number
   }
 }
-const startDrag = ({ data, type, onDragEnd, drag_item_info }: StartDragInput) =>
+const startDrag = ({
+  data,
+  type,
+  onDragEnd,
+  drag_item_info,
+  onDragStart,
+}: StartDragInput) =>
   createAction(ActionTypes.START_DRAG, {
     data,
     type,
-    onDragEnd,
+    onDragEnd: onDragEnd || noop,
+    onDragStart: onDragStart || noop,
     drag_item_info,
   })
 
-const endDrag = () => createAction(ActionTypes.END_DRAG)
+type EndDragInput = {
+  pointer: {
+    clientX: number
+    clientY: number
+    pageX: number
+    pageY: number
+  }
+}
+const endDrag = ({ pointer }: EndDragInput) =>
+  createAction(ActionTypes.END_DRAG, { pointer })
 
 type DropInput = {
   dropzone: {
@@ -78,9 +60,13 @@ type DropInput = {
       relative_y: number
     }
   }
+  onDrop: (input: OnDropInput) => any
 }
-const drop = ({ dropzone: { clientX, clientY, pointer } }: DropInput) =>
-  createAction(ActionTypes.DROP, { dropzone: { clientX, clientY, pointer } })
+const drop = ({ onDrop, dropzone: { clientX, clientY, pointer } }: DropInput) =>
+  createAction(ActionTypes.DROP, {
+    dropzone: { clientX, clientY, pointer },
+    onDrop: onDrop || noop,
+  })
 
 type UpdateDataInput = {
   data: any
@@ -95,4 +81,4 @@ export const actions = {
   updateData,
 }
 
-export type Actions = ActionsUnion<typeof actions>
+export type Action = ActionsUnion<typeof actions>

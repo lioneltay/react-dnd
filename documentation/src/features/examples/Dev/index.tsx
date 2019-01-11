@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useContext } from "react"
-import { useDraggable, useDropzone, Context, Type } from "@tekktekk/react-dnd"
+import {
+  useDraggable,
+  useDropzone,
+  Context,
+  DragType,
+} from "@tekktekk/react-dnd"
 import styled from "styled-components"
 
 const Box = styled.div`
@@ -13,7 +18,7 @@ const Box = styled.div`
 type Item = {
   id: number
   value: string
-  type: Type
+  type: DragType
 }
 
 const items = [
@@ -41,7 +46,7 @@ const Item: React.FunctionComponent<ItemProps> = ({ item }) => {
 }
 
 type BasketProps = {
-  type: Type
+  type: DragType
   label: string
 }
 
@@ -50,7 +55,7 @@ const Basket: React.FunctionComponent<BasketProps> = ({ type, label }) => {
 
   const { event_handlers, hovering, can_drop } = useDropzone({
     onDrop: ({ data }) => {
-      console.log('onDrop')
+      console.log("onDrop")
       setDrops(d => d + 1)
     },
     type,

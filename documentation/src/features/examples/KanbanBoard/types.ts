@@ -9,3 +9,5 @@ export type List = {
   label: string
   items: Item[]
 }
+
+export type KanbanBoard = List[]
