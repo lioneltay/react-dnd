@@ -1,3 +1,5 @@
+export type FunctionType<A extends any[] = any[], R = any> = (...args: A) => R
+
 type Action<T extends string> = {
   type: T
 }
