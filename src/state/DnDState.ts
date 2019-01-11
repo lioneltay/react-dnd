@@ -2,7 +2,7 @@ import { DragType } from "../types"
 import { OnDragEndInput } from "./reducer"
 
 export type RenderPreviewInput = {
-  data: unknown
+  data: any
   dimensions: {
     width: number
     height: number
@@ -10,7 +10,7 @@ export type RenderPreviewInput = {
 }
 
 type DropResult = {
-  data: unknown
+  data: any
   dropzone: {
     clientX: number
     clientY: number
@@ -30,12 +30,12 @@ type DragItemInfo = {
   height: number
 }
 
-export type DnDState =
+export type DnDState<D = any> =
   | {
       is_dragging: true
       dropped: false
       type: DragType
-      data: unknown
+      data: D
       drag_item_info: DragItemInfo
       drop_result: null
       callbacks: {
@@ -50,7 +50,7 @@ export type DnDState =
       is_dragging: false
       dropped: true
       type: null
-      data: unknown
+      data: D
       drag_item_info: DragItemInfo
       drop_result: DropResult
       callbacks: {

@@ -13,7 +13,7 @@ export enum ActionTypes {
 }
 
 type StartDragInput = {
-  data: unknown
+  data: any
   type: DragType
   renderer: {
     render?: (info: RenderPreviewInput) => React.ReactNode
@@ -67,16 +67,19 @@ type DropInput = {
       relative_y: number
     }
   }
-  onDrop: (input: OnDropInput) => unknown
+  onDrop: (input: OnDropInput) => any
 }
-const drop = ({ onDrop, dropzone: { clientX, clientY, pointer } }: DropInput) =>
+const drop = ({
+  onDrop,
+  dropzone: { clientX, clientY, pointer },
+}: DropInput) =>
   createAction(ActionTypes.DROP, {
     dropzone: { clientX, clientY, pointer },
     onDrop: onDrop || noop,
   })
 
 type UpdateDataInput = {
-  data: unknown
+  data: any
 }
 const updateData = ({ data }: UpdateDataInput) =>
   createAction(ActionTypes.UPDATE_DATA, { data })

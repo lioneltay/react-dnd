@@ -45,7 +45,8 @@ const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
     data: { color, label, position },
   })
 
-  const { event_handlers: drop_handlers } = useDropzone({
+  type Data = { position: number }
+  const { event_handlers: drop_handlers } = useDropzone<Data>({
     type: "item",
     onDragEnter: ({ data, updateData }) => {
       if (data.position !== position) {
@@ -61,7 +62,7 @@ const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
       {...drop_handlers}
       style={{
         backgroundColor: color,
-        opacity: position === data.position ? 0.5 : 1,
+        opacity: data && position === data.position ? 0.5 : 1,
       }}
     >
       {label}

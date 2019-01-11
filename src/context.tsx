@@ -1,8 +1,8 @@
 import React, {
+  createContext,
   useEffect,
   useState,
   Fragment,
-  createContext,
   useContext,
   useReducer,
   useMemo,
@@ -18,10 +18,10 @@ import {
   bindActionCreators,
 } from "./state"
 
-type Context = {
+export type Context<D = unknown> = {
   dispatch: React.Dispatch<Action>
   actions: typeof action_creators
-  state: DnDState
+  state: DnDState<D>
 }
 
 export const Context = createContext((null as unknown) as Context)

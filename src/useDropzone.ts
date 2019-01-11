@@ -2,19 +2,20 @@ import { useContext, useState } from "react"
 import { Context } from "./context"
 import { matchType, noop } from "./utils"
 import { DragType } from "./types"
+import { OnDropInput } from "./state"
 
-export type UseDropzoneOptions<T = unknown> = {
-  canDrop?: (info: { data: T }) => boolean
-  onDrop?: (info: { data: T; type: DragType }) => T | void
+export type UseDropzoneOptions<D = any> = {
+  canDrop?: (info: { data: D }) => boolean
+  onDrop?: (info: OnDropInput<D>) => any
   type: DragType
   onDragEnter?: (
     info: {
-      data: T
+      data: D
       type: DragType
-      updateData: (data: T) => void
+      updateData: (data: D) => void
     },
   ) => void
-  onDragLeave?: (info: { data: T }) => void
+  onDragLeave?: (info: { data: D }) => void
 }
 
 export type UseDropzoneResult = {
@@ -28,14 +29,14 @@ export type UseDropzoneResult = {
   }
 }
 
-export const useDropzone = ({
+export const useDropzone = <D = any>({
   canDrop = () => true,
   onDrop = noop,
   onDragEnter = noop,
   onDragLeave = noop,
   type,
-}: UseDropzoneOptions): UseDropzoneResult => {
-  const { state, actions } = useContext(Context)
+}: UseDropzoneOptions<D>): UseDropzoneResult => {
+  const { state, actions } = useContext<Context<D>>(Context as any)
   const [hovering, setHovering] = useState(false)
 
   const calculateCanDrop = () =>
@@ -72,7 +73,7 @@ export const useDropzone = ({
           onDragEnter({
             type: state.type,
             data: state.data,
-            updateData: (data: unknown) => {
+            updateData: data => {
               actions.updateData({ data })
             },
           })

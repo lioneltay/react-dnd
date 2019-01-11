@@ -4,8 +4,8 @@ import { assertNever } from "../utils"
 import { DnDState } from "./DnDState"
 import { DragType } from "../types"
 
-export type OnDropInput = {
-  data: unknown
+export type OnDropInput<D = any> = {
+  data: D
   type: DragType
 }
 

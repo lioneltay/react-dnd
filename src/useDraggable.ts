@@ -18,7 +18,7 @@ export type DraggableOptions<T> = {
 export type DraggableResult = {
   state: {
     is_dragging: boolean
-    data: unknown
+    data: any
   }
   event_handlers: {
     ref: React.Ref<any>
@@ -26,7 +26,7 @@ export type DraggableResult = {
   }
 }
 
-export const useDraggable = <T = unknown>({
+export const useDraggable = <T = any>({
   render_z_index,
   renderDraggingItem,
   onDragStart = noop,

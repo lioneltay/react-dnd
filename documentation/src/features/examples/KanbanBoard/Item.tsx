@@ -55,7 +55,8 @@ const Item: React.FunctionComponent<ItemProps> = ({
       {...drag_handlers}
       style={{
         backgroundColor: color,
-        opacity: equals([list_position, position], data.position) ? 0.5 : 1,
+        opacity:
+          data && equals([list_position, position], data.position) ? 0.5 : 1,
       }}
     >
       {label}

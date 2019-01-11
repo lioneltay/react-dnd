@@ -52,18 +52,10 @@ const SortableList: React.FunctionComponent = () => {
           <Dropzone
             key={item.label}
             type="item"
-            onDragEnter={info => {
-              if (
-                typeof info.data === "object" &&
-                info.data !== null &&
-                info.data.hasOwnProperty("index")
-              ) {
-                return
-              }
-
+            onDragEnter={({ data, updateData }) => {
               if (data.index !== index) {
                 setItems(items => move(data.index, index, items))
-                info.updateData({ ...data, index })
+                updateData({ ...data, index })
               }
             }}
           >
@@ -75,7 +67,7 @@ const SortableList: React.FunctionComponent = () => {
                     {...drag_handlers}
                     style={{
                       backgroundColor: item.color,
-                      opacity: index === data.index ? 0.5 : 1,
+                      opacity: data && index === data.index ? 0.5 : 1,
                     }}
                   >
                     {item.label}

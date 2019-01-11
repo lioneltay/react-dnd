@@ -42,7 +42,7 @@ const Knight: React.FunctionComponent<Props> = ({ position }) => {
     type: "piece",
   })
 
-  return equals(data.position, position) ? null : (
+  return data && equals(data.position, position) ? null : (
     <KnightDisplay {...event_handlers} className="fas fa-chess-knight" />
   )
 }
