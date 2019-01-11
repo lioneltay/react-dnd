@@ -69,10 +69,7 @@ type DropInput = {
   }
   onDrop: (input: OnDropInput) => any
 }
-const drop = ({
-  onDrop,
-  dropzone: { clientX, clientY, pointer },
-}: DropInput) =>
+const drop = ({ onDrop, dropzone: { clientX, clientY, pointer } }: DropInput) =>
   createAction(ActionTypes.DROP, {
     dropzone: { clientX, clientY, pointer },
     onDrop: onDrop || noop,
