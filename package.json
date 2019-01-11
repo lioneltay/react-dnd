@@ -25,7 +25,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "build:docs": "cd ./documentation && npm run build && cd .. &&npm run typedocs",
+    "build:docs": "cd ./documentation && npm run build && cd .. && npm run typedocs",
     "update:docs": "npm run build:docs && git add . && git commit -m \"Update Documenation\" & git push origin master",
     "typedocs": "npx typedoc --out ./docs/typedocs ./src/index.ts",
     "preversion": "npm run test && npm run lint",
