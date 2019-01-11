@@ -12,6 +12,7 @@
     "object-literal-sort-keys": false,
     "no-shadowed-variable": false,
     "member-access": false,
+    // "no-any": true,
     "interface-name": false
   }
 }

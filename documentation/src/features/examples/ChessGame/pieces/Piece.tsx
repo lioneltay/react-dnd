@@ -2,6 +2,7 @@ import React, { useMemo, forwardRef } from "react"
 import styled from "styled-components"
 import { Position, ChessSide, DragData, ChessPiece } from "../types"
 import { useDraggable } from "@tekktekk/react-dnd"
+import { equals } from "ramda"
 
 const Icon = styled.i`
   user-select: none;
@@ -55,7 +56,10 @@ export const DraggablePiece: React.FunctionComponent<DraggablePieceProps> = ({
   side,
   piece,
 }) => {
-  const { event_handlers, local } = useDraggable<DragData>({
+  const {
+    event_handlers,
+    state: { data },
+  } = useDraggable<DragData>({
     data: {
       piece,
       side,
@@ -66,10 +70,10 @@ export const DraggablePiece: React.FunctionComponent<DraggablePieceProps> = ({
 
   return useMemo(
     () => {
-      return local.is_dragging ? null : (
+      return equals(data.position, position) ? null : (
         <Piece {...event_handlers} piece={piece} side={side} />
       )
     },
-    [local.is_dragging, piece, side],
+    [data, position, piece, side],
   )
 }

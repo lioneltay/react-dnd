@@ -3,6 +3,7 @@ import { OnDragEndInput, OnDragStartInput, OnDropInput } from "./reducer"
 import { createAction, ActionsUnion } from "./utils"
 import { DragType } from "../types"
 import { noop } from "../utils"
+import { RenderPreviewInput } from "./DnDState"
 
 export enum ActionTypes {
   START_DRAG = "START_DRAG",
@@ -12,8 +13,12 @@ export enum ActionTypes {
 }
 
 type StartDragInput = {
-  data: any
+  data: unknown
   type: DragType
+  renderer: {
+    render?: (info: RenderPreviewInput) => React.ReactNode
+    z_index?: number
+  }
   onDragEnd?: (info: OnDragEndInput) => void
   onDragStart?: (info: OnDragStartInput) => void
   drag_item_info: {
@@ -26,6 +31,7 @@ type StartDragInput = {
   }
 }
 const startDrag = ({
+  renderer,
   data,
   type,
   onDragEnd,
@@ -38,6 +44,7 @@ const startDrag = ({
     onDragEnd: onDragEnd || noop,
     onDragStart: onDragStart || noop,
     drag_item_info,
+    renderer,
   })
 
 type EndDragInput = {
@@ -60,7 +67,7 @@ type DropInput = {
       relative_y: number
     }
   }
-  onDrop: (input: OnDropInput) => any
+  onDrop: (input: OnDropInput) => unknown
 }
 const drop = ({ onDrop, dropzone: { clientX, clientY, pointer } }: DropInput) =>
   createAction(ActionTypes.DROP, {
@@ -69,7 +76,7 @@ const drop = ({ onDrop, dropzone: { clientX, clientY, pointer } }: DropInput) =>
   })
 
 type UpdateDataInput = {
-  data: any
+  data: unknown
 }
 const updateData = ({ data }: UpdateDataInput) =>
   createAction(ActionTypes.UPDATE_DATA, { data })

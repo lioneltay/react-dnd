@@ -19,7 +19,11 @@ const KanbanBoardExample: React.FunctionComponent = () => {
   const [kanban_board, setKanbanBoard] = useState(DATA)
 
   return (
-    <Provider>
+    <Provider
+      renderDraggingItem={() =>
+        "There is no renderer at the useDraggable level!"
+      }
+    >
       <Container>
         {kanban_board.map((list, index) => (
           <List

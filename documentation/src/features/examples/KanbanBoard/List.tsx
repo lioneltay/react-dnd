@@ -1,9 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 import { useDraggable, useDropzone } from "@tekktekk/react-dnd"
+import { equals } from "ramda"
 
 import { Item as ItemType } from "./types"
-import Item from "./Item"
+import Item, { ItemDisplay } from "./Item"
 
 const ListDisplay = styled.div`
   border: 1px solid red;
@@ -27,9 +28,23 @@ const List: React.FunctionComponent<ListProps> = ({
   moveList,
   moveItem,
 }) => {
-  const { event_handlers: drag_handlers } = useDraggable({
+  const {
+    event_handlers: drag_handlers,
+    state: { data },
+  } = useDraggable({
     type: "list",
     data: { position },
+    renderDraggingItem: () => (
+      <ListDisplay {...drag_handlers} {...drop_handlers}>
+        <div>{label}</div>
+
+        {items.map((item, index) => (
+          <ItemDisplay style={{ backgroundColor: item.color }}>
+            {item.label}
+          </ItemDisplay>
+        ))}
+      </ListDisplay>
+    ),
   })
 
   const { event_handlers: drop_handlers } = useDropzone({
@@ -48,7 +63,11 @@ const List: React.FunctionComponent<ListProps> = ({
   })
 
   return (
-    <ListDisplay {...drag_handlers} {...drop_handlers}>
+    <ListDisplay
+      {...drag_handlers}
+      {...drop_handlers}
+      style={{ opacity: equals(data.position, position) ? 0.5 : 1 }}
+    >
       <div>{label}</div>
 
       {items.map((item, index) => (

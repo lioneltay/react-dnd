@@ -5,7 +5,7 @@ import { DnDState } from "./DnDState"
 import { DragType } from "../types"
 
 export type OnDropInput = {
-  data: any
+  data: unknown
   type: DragType
 }
 
@@ -47,12 +47,13 @@ export const initial_state: DnDState = {
   callbacks: {
     onDragEnd: null,
   },
+  renderer: null,
 }
 
-export const reducer: React.Reducer<DnDState, Action> = (
-  state = initial_state,
-  action,
-) => {
+export const reducer = (
+  state: DnDState = initial_state,
+  action: Action,
+): DnDState => {
   switch (action.type) {
     case ActionTypes.START_DRAG: {
       if (state.is_dragging) {
@@ -69,7 +70,8 @@ export const reducer: React.Reducer<DnDState, Action> = (
           onDragEnd: action.payload.onDragEnd,
         },
         drag_item_info: action.payload.drag_item_info,
-      }
+        renderer: action.payload.renderer,
+      } as DnDState
 
       action.payload.onDragStart({})
 
@@ -91,7 +93,8 @@ export const reducer: React.Reducer<DnDState, Action> = (
           onDragEnd: null,
         },
         drag_item_info: null,
-      }
+        renderer: null,
+      } as DnDState
 
       if (state.callbacks.onDragEnd) {
         state.callbacks.onDragEnd({
@@ -137,7 +140,7 @@ export const reducer: React.Reducer<DnDState, Action> = (
       return {
         ...state,
         data: action.payload.data,
-      }
+      } as DnDState
     }
 
     default: {

@@ -2,6 +2,7 @@ import React, { forwardRef } from "react"
 import styled from "styled-components"
 import { useDraggable } from "@tekktekk/react-dnd"
 import { Position, Board } from "./types"
+import { equals } from "ramda"
 
 const Icon = styled.i`
   user-select: none;
@@ -30,7 +31,10 @@ type Props = {
 
 /** Draggable Knight Piece */
 const Knight: React.FunctionComponent<Props> = ({ position }) => {
-  const { event_handlers, local } = useDraggable({
+  const {
+    event_handlers,
+    state: { data },
+  } = useDraggable({
     data: {
       piece: "knight",
       position,
@@ -38,7 +42,7 @@ const Knight: React.FunctionComponent<Props> = ({ position }) => {
     type: "piece",
   })
 
-  return local.is_dragging ? null : (
+  return equals(data.position, position) ? null : (
     <KnightDisplay {...event_handlers} className="fas fa-chess-knight" />
   )
 }

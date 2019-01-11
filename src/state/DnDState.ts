@@ -1,8 +1,16 @@
 import { DragType } from "../types"
 import { OnDragEndInput } from "./reducer"
 
+export type RenderPreviewInput = {
+  data: unknown
+  dimensions: {
+    width: number
+    height: number
+  }
+}
+
 type DropResult = {
-  data: any
+  data: unknown
   dropzone: {
     clientX: number
     clientY: number
@@ -22,57 +30,43 @@ type DragItemInfo = {
   height: number
 }
 
-// export type DnDState =
-//   | {
-//       is_dragging: false
-//       type: undefined
-//       data: null
-//       onDragEnd?: undefined
-//       drag_item_info: null
-//       dropped: boolean
-//       drop_result?: DropResult
-//     }
-//   | {
-//       is_dragging: true
-//       type: DragType
-//       data: any
-//       onDragEnd?: ((input: OnDragEndInput) => void)
-//       drag_item_info: DragItemInfo
-//       dropped: boolean
-//       drop_result?: DropResult
-//     }
-
 export type DnDState =
   | {
       is_dragging: true
       dropped: false
       type: DragType
-      data: any
+      data: unknown
       drag_item_info: DragItemInfo
       drop_result: null
       callbacks: {
         onDragEnd: null | ((input: OnDragEndInput) => void)
+      }
+      renderer: {
+        render?: (info: RenderPreviewInput) => React.ReactNode
+        z_index?: number
       }
     }
   | {
       is_dragging: false
       dropped: true
       type: null
-      data: any
-      drop_result: DropResult
+      data: unknown
       drag_item_info: DragItemInfo
+      drop_result: DropResult
       callbacks: {
         onDragEnd: null | ((input: OnDragEndInput) => void)
       }
+      renderer: null
     }
   | {
       is_dragging: false
       dropped: false
       type: null
       data: null
-      drop_result: null
       drag_item_info: null
+      drop_result: null
       callbacks: {
         onDragEnd: null
       }
+      renderer: null
     }

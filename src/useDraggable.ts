@@ -1,7 +1,7 @@
-import { useEffect, useContext, useState, useRef } from "react"
+import { useEffect, useContext, useRef } from "react"
 import { Context } from "./context"
 import { noop } from "./utils"
-import { OnDragEndInput } from "./state"
+import { OnDragEndInput, RenderPreviewInput } from "./state"
 import { DragType } from "./types"
 
 type OnDragStartInput = {}
@@ -11,14 +11,14 @@ export type DraggableOptions<T> = {
   onDragEnd?: (input: OnDragEndInput) => void
   data?: T
   type: DragType
+  renderDraggingItem?: (info: RenderPreviewInput) => React.ReactNode
+  render_z_index?: number
 }
 
 export type DraggableResult = {
-  local: {
-    is_dragging: boolean
-  }
   state: {
     is_dragging: boolean
+    data: unknown
   }
   event_handlers: {
     ref: React.Ref<any>
@@ -26,20 +26,15 @@ export type DraggableResult = {
   }
 }
 
-export const useDraggable = <T = any>({
+export const useDraggable = <T = unknown>({
+  render_z_index,
+  renderDraggingItem,
   onDragStart = noop,
   onDragEnd = noop,
   data,
   type,
 }: DraggableOptions<T>): DraggableResult => {
   const { actions, state } = useContext(Context)
-  const [is_dragging, setIsDragging] = useState(false)
-
-  useEffect(() => {
-    const notDragging = () => setIsDragging(false)
-    document.addEventListener("pointerup", notDragging)
-    return () => document.removeEventListener("pointerup", notDragging)
-  }, [])
 
   const domRef = useRef(null as null | HTMLElement)
 
@@ -61,11 +56,9 @@ export const useDraggable = <T = any>({
   )
 
   return {
-    local: {
-      is_dragging,
-    },
     state: {
       is_dragging: state.is_dragging,
+      data: state.data,
     },
     event_handlers: {
       ref: domRef,
@@ -81,9 +74,13 @@ export const useDraggable = <T = any>({
         const offset_x = e.clientX - x
         const offset_y = e.clientY - y
 
-        setIsDragging(true)
         actions.startDrag({
+          onDragStart,
           onDragEnd,
+          renderer: {
+            render: renderDraggingItem,
+            z_index: render_z_index,
+          },
           data,
           type,
           drag_item_info: {

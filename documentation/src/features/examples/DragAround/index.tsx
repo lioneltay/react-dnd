@@ -32,7 +32,7 @@ const DraggableBall: React.FunctionComponent = () => {
 
   const {
     event_handlers,
-    local: { is_dragging },
+    state: { is_dragging },
   } = useDraggable({
     type: "stuff",
     onDragEnd: ({ pointer, dropped, dropzone, drag_item_info }) => {

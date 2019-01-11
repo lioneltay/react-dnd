@@ -5,8 +5,8 @@ import {
   UseDropzoneResult,
 } from "./useDropzone"
 
-type Props = UseDropzoneOptions<any> & {
-  children: (info: UseDropzoneResult) => React.ReactElement<any> | null
+type Props = UseDropzoneOptions & {
+  children: (info: UseDropzoneResult) => React.ReactElement<unknown> | null
 }
 
 export const Dropzone: React.FunctionComponent<Props> = ({

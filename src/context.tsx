@@ -10,6 +10,7 @@ import React, {
 
 import {
   DnDState,
+  RenderPreviewInput,
   Action,
   reducer,
   initial_state,
@@ -24,14 +25,6 @@ type Context = {
 }
 
 export const Context = createContext((null as unknown) as Context)
-
-type RenderPreviewInput = {
-  data: any
-  dimensions: {
-    width: number
-    height: number
-  }
-}
 
 type ProviderProps = {
   /**
@@ -72,10 +65,12 @@ export const Provider: React.FunctionComponent<ProviderProps> = ({
   return (
     <Context.Provider value={{ state, dispatch, actions }}>
       <Fragment>
-        <DragItem
-          renderDraggingItem={renderDraggingItem}
-          z_index={dragging_item_z_index}
-        />
+        {state.is_dragging && (
+          <DragItem
+            renderDraggingItem={state.renderer.render || renderDraggingItem}
+            z_index={state.renderer.z_index || dragging_item_z_index}
+          />
+        )}
         {children}
       </Fragment>
     </Context.Provider>

@@ -46,7 +46,7 @@ export const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
 }) => {
   const {
     event_handlers,
-    local: { is_dragging },
+    state: { data },
   } = useDraggable({
     type,
     data: item_props,
@@ -55,7 +55,9 @@ export const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
   return (
     <Item
       {...event_handlers}
-      style={{ visibility: is_dragging ? "hidden" : "visible" }}
+      style={{
+        visibility: data.label === item_props.label ? "hidden" : "visible",
+      }}
       {...item_props}
     />
   )

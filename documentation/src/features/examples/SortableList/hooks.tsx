@@ -39,7 +39,7 @@ const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
 }) => {
   const {
     event_handlers: drag_handlers,
-    local: { is_dragging },
+    state: { data },
   } = useDraggable({
     type: "item",
     data: { color, label, position },
@@ -59,7 +59,10 @@ const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
     <ItemDisplay
       {...drag_handlers}
       {...drop_handlers}
-      style={{ backgroundColor: color, opacity: is_dragging ? 0.5 : 1 }}
+      style={{
+        backgroundColor: color,
+        opacity: position === data.position ? 0.5 : 1,
+      }}
     >
       {label}
     </ItemDisplay>

@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { Provider, Dropzone, Draggable } from "@tekktekk/react-dnd"
+import { object } from "prop-types"
 
 const ITEMS = [
   { label: "Item 1", color: "rgba(109, 211, 206, 1)" },
@@ -51,25 +52,30 @@ const SortableList: React.FunctionComponent = () => {
           <Dropzone
             key={item.label}
             type="item"
-            onDragEnter={({ data, updateData }) => {
+            onDragEnter={info => {
+              if (
+                typeof info.data === "object" &&
+                info.data !== null &&
+                info.data.hasOwnProperty("index")
+              ) {
+                return
+              }
+
               if (data.index !== index) {
                 setItems(items => move(data.index, index, items))
-                updateData({ ...data, index })
+                info.updateData({ ...data, index })
               }
             }}
           >
             {({ event_handlers: drop_handlers }) => (
               <Draggable type="item" data={{ ...item, index }}>
-                {({
-                  event_handlers: drag_handlers,
-                  local: { is_dragging },
-                }) => (
+                {({ event_handlers: drag_handlers, state: { data } }) => (
                   <ItemDisplay
                     {...drop_handlers}
                     {...drag_handlers}
                     style={{
                       backgroundColor: item.color,
-                      opacity: is_dragging ? 0.5 : 1,
+                      opacity: index === data.index ? 0.5 : 1,
                     }}
                   >
                     {item.label}
