@@ -8,6 +8,7 @@ import ChessGameDemo from "./ChessGame"
 import DragTypesDemo from "./DragTypes"
 import DragAroundDemo from "./DragAround"
 import SortableListDemo from "./SortableList"
+import KanbanBoardDemo from "./KanbanBoard"
 
 const Container = styled.div`
   padding-top: 30px;
@@ -24,6 +25,7 @@ const ExamplePage: React.FunctionComponent = () => {
         <Route path="/examples/drag-types" component={DragTypesDemo} />
         <Route path="/examples/drag-around" component={DragAroundDemo} />
         <Route path="/examples/sortable-list" component={SortableListDemo} />
+        <Route path="/examples/kanban-board" component={KanbanBoardDemo} />
         <Route render={() => <Redirect to="/examples/chess" />} />
       </Switch>
     </Container>

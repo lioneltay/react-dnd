@@ -15,6 +15,7 @@ const ExamplesNavigation: React.FunctionComponent = () => {
       <NavItem to="/examples/drag-types">Drag Types</NavItem>
       <NavItem to="/examples/drag-around">Drag Around</NavItem>
       <NavItem to="/examples/sortable-list">Sortable List</NavItem>
+      <NavItem to="/examples/kanban-board">Kanban Board</NavItem>
     </Container>
   )
 }

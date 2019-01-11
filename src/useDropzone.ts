@@ -7,11 +7,12 @@ import { matchType, noop } from "./utils"
 
 export type UseDropzoneOptions<T> = {
   canDrop?: (info: { data: T }) => boolean
-  onDrop?: (info: { data: T }) => void
+  onDrop?: (info: { data: T; type: Type }) => void
   type: Type
   onDragEnter?: (
     info: {
       data: T
+      type: Type
       updateData: (data: T) => void
     },
   ) => void
@@ -52,7 +53,8 @@ export const useDropzone = <T = any>({
     event_handlers: {
       onPointerUp: (e: React.PointerEvent) => {
         if (calculateCanDrop()) {
-          onDrop({ data: state.data })
+          console.log("candrop", state.type, type, state.dropped)
+          onDrop({ data: state.data, type: state.type })
 
           const { x, y } = e.currentTarget.getBoundingClientRect() as DOMRect
           actions.drop({
@@ -72,6 +74,7 @@ export const useDropzone = <T = any>({
         setHovering(true)
         if (state.is_dragging) {
           onDragEnter({
+            type: state.type,
             data: state.data,
             updateData: (data: any) => {
               actions.updateData({ data })

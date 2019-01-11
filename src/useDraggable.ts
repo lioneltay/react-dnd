@@ -95,7 +95,9 @@ export const useDraggable = <T = any>({
             height,
           },
         })
-        onDragStart({})
+        if (!state.is_dragging) {
+          onDragStart({})
+        }
       },
     },
   }

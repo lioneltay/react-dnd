@@ -89,6 +89,10 @@ export const reducer: React.Reducer<State, Actions> = (
 ) => {
   switch (action.type) {
     case ActionTypes.START_DRAG: {
+      if (state.is_dragging) {
+        return state
+      }
+
       return {
         ...state,
         data: action.payload.data,
@@ -113,6 +117,10 @@ export const reducer: React.Reducer<State, Actions> = (
     }
 
     case ActionTypes.DROP: {
+      if (state.dropped) {
+        return state
+      }
+
       return {
         ...state,
         dropped: true,

@@ -1,5 +1,15 @@
 ## Todo
 
+- [ ] once an item is dragging no other dragging should be able to start
+  - [ ] got to find a better way to manage state updates
+  - [ ] think about updateData as well
+
+- [ ] dropzone should consume drop unless specified not too
+
+- [ ] ability to compose custom event handlers (don't just override them)
+
+- [ ] should be able to register a renderer at useDraggable()
+
 - [ ] Clicked on item in nav drawer should close drawer
 
 - [ ] Review media component (turn it into hook)
