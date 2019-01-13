@@ -105,12 +105,12 @@ const DragItem: React.FunctionComponent<DragItemProps> = ({
     return null
   }
 
-  const translate_x =
-    (mouse_position ? mouse_position.x : state.drag_item_info.x) -
-    state.drag_item_info.offset_x
-  const translate_y =
-    (mouse_position ? mouse_position.y : state.drag_item_info.y) -
-    state.drag_item_info.offset_y
+  const translate_x = mouse_position
+    ? mouse_position.x - state.drag_item_info.offset_x
+    : state.drag_item_info.x
+  const translate_y = mouse_position
+    ? mouse_position.y - state.drag_item_info.offset_y
+    : state.drag_item_info.y
 
   return (
     <div
