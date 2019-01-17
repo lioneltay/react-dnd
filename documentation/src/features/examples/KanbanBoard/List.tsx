@@ -64,8 +64,7 @@ const List: React.FunctionComponent<ListProps> = ({
 
   return (
     <ListDisplay
-      {...drag_handlers}
-      {...drop_handlers}
+      {...drag_handlers(drop_handlers())}
       style={{ opacity: data && equals(data.position, position) ? 0.5 : 1 }}
     >
       <div>{label}</div>

@@ -15,12 +15,20 @@ export type DraggableOptions<T> = {
   render_z_index?: number
 }
 
+type EventHandlersInput = {
+  [key: string]: any
+  ref?: React.Ref<any>
+  onPointerDown?: (e: React.PointerEvent) => void
+}
+
 export type DraggableResult = {
   state: {
     is_dragging: boolean
     data: any
   }
-  event_handlers: {
+  event_handlers: (
+    input?: EventHandlersInput,
+  ) => {
     ref: React.Ref<any>
     onPointerDown: (e: React.PointerEvent) => void
   }
@@ -60,39 +68,58 @@ export const useDraggable = <T = any>({
       is_dragging: state.is_dragging,
       data: state.data,
     },
-    event_handlers: {
-      ref: domRef,
+    event_handlers: (input = {}) => {
+      const { onPointerDown, ref, ...rest } = input
 
-      onPointerDown: (e: React.PointerEvent) => {
-        const {
-          x,
-          y,
-          width,
-          height,
-        } = e.currentTarget.getBoundingClientRect() as DOMRect
+      return {
+        ...rest,
 
-        const offset_x = e.clientX - x
-        const offset_y = e.clientY - y
+        ref: el => {
+          domRef.current = el
 
-        actions.startDrag({
-          onDragStart,
-          onDragEnd,
-          renderer: {
-            render: renderDraggingItem,
-            z_index: render_z_index,
-          },
-          data,
-          type,
-          drag_item_info: {
+          if (ref) {
+            if (typeof ref === "function") {
+              return ref(el)
+            }
+            ;(ref as any).current = el
+          }
+        },
+
+        onPointerDown: (e: React.PointerEvent) => {
+          if (onPointerDown) {
+            onPointerDown(e)
+          }
+
+          const {
             x,
             y,
-            offset_x,
-            offset_y,
             width,
             height,
-          },
-        })
-      },
+          } = e.currentTarget.getBoundingClientRect() as DOMRect
+
+          const offset_x = e.clientX - x
+          const offset_y = e.clientY - y
+
+          actions.startDrag({
+            onDragStart,
+            onDragEnd,
+            renderer: {
+              render: renderDraggingItem,
+              z_index: render_z_index,
+            },
+            data,
+            type,
+            drag_item_info: {
+              x,
+              y,
+              offset_x,
+              offset_y,
+              width,
+              height,
+            },
+          })
+        },
+      }
     },
   }
 }

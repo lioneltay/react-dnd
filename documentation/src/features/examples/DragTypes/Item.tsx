@@ -54,7 +54,7 @@ export const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
 
   return (
     <Item
-      {...event_handlers}
+      {...event_handlers()}
       style={{
         visibility:
           data && data.label === item_props.label ? "hidden" : "visible",

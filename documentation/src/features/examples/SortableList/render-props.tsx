@@ -63,8 +63,7 @@ const SortableList: React.FunctionComponent = () => {
               <Draggable type="item" data={{ ...item, index }}>
                 {({ event_handlers: drag_handlers, state: { data } }) => (
                   <ItemDisplay
-                    {...drop_handlers}
-                    {...drag_handlers}
+                    {...drop_handlers(drag_handlers())}
                     style={{
                       backgroundColor: item.color,
                       opacity: data && index === data.index ? 0.5 : 1,

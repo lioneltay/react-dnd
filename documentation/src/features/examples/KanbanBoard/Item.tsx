@@ -51,8 +51,7 @@ const Item: React.FunctionComponent<ItemProps> = ({
 
   return (
     <ItemDisplay
-      {...drop_handlers}
-      {...drag_handlers}
+      {...drop_handlers(drag_handlers())}
       style={{
         backgroundColor: color,
         opacity:

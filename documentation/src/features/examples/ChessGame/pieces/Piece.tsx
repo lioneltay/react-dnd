@@ -71,7 +71,7 @@ export const DraggablePiece: React.FunctionComponent<DraggablePieceProps> = ({
   return useMemo(
     () => {
       return data && equals(data.position, position) ? null : (
-        <Piece {...event_handlers} piece={piece} side={side} />
+        <Piece {...event_handlers()} piece={piece} side={side} />
       )
     },
     [data, position, piece, side],

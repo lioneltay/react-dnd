@@ -23,7 +23,7 @@ export const Bin: React.FunctionComponent<BinProps> = ({
 
   return (
     <div
-      {...event_handlers}
+      {...event_handlers()}
       style={{
         color: "white",
         display: "flex",

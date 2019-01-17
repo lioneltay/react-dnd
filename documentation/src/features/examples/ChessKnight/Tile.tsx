@@ -45,7 +45,7 @@ const Tile: React.FunctionComponent<Props> = ({ position, piece }) => {
 
   return (
     <Container
-      {...event_handlers}
+      {...event_handlers()}
       style={{
         backgroundColor: can_drop
           ? "lightgreen"

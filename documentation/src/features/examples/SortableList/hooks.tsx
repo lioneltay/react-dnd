@@ -58,8 +58,7 @@ const DraggableItem: React.FunctionComponent<DraggableItemProps> = ({
 
   return (
     <ItemDisplay
-      {...drag_handlers}
-      {...drop_handlers}
+      {...drag_handlers(drop_handlers())}
       style={{
         backgroundColor: color,
         opacity: data && position === data.position ? 0.5 : 1,

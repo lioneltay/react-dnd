@@ -9,7 +9,7 @@ const Dropzone: React.FunctionComponent = ({ children }) => {
 
   return (
     <div
-      {...event_handlers}
+      {...event_handlers()}
       style={{
         height: "70vh",
         width: "70vw",
@@ -47,7 +47,7 @@ const DraggableBall: React.FunctionComponent = () => {
 
   return !is_dragging ? (
     <Ball
-      {...event_handlers}
+      {...event_handlers()}
       style={{
         cursor: "pointer",
         transform: `translate(${translate_x}px, ${translate_y}px)`,
