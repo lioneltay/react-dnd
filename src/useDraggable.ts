@@ -49,7 +49,9 @@ export const useDraggable = <T = any>({
   useEffect(
     () => {
       const listener = (e: TouchEvent) => {
-        e.preventDefault()
+        if (e.cancelable) {
+          e.preventDefault()
+        }
       }
 
       if (domRef.current) {
